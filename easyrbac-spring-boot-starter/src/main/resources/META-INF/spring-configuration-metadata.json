@@ -1,0 +1,8 @@
+{
+  "group": [
+    {
+      "name": "easy-rbac",
+      "type": "com.uliian.easyrbac.config.EasyRbacConfig"
+    }
+  ]
+}

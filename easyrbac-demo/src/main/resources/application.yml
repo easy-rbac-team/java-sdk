@@ -1,0 +1,6 @@
+easyrbac:
+  app-id: test
+  app-secret: test
+  url: http://easyrbac.uliian.com
+  token-config:
+    key: 888888888
