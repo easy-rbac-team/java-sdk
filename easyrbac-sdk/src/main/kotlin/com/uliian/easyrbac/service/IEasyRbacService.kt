@@ -9,9 +9,9 @@ interface IEasyRbacService {
 
      fun getEasyRbacUserInfo(easyRbacUserToken: String): UserInfo
 
-     fun generateToken(easyRbacUserToken: String): String
+//     fun generateToken(easyRbacUserToken: String): String
 
-     fun getUserInfo(localToken: String): UserInfo
+//     fun getUserInfo(localToken: String): UserInfo
 
      fun getUserResource(easyRbacToken: String): List<UserResource>
 

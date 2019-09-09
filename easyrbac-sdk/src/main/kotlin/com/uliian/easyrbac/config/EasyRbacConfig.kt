@@ -3,15 +3,15 @@ package com.uliian.easyrbac.config
 class EasyRbacConfig {
     var appId: String = ""
     var appSecret: String = ""
-    var url: String = ""
-    var localTokenConfig: JwtConfig = JwtConfig()
+    var url: String = "http://easyrbac.uliian.com"
+//    var localTokenConfig: JwtConfig = JwtConfig()
     var checkPermission: Boolean = false
 }
 
 class JwtConfig {
     var key: String? = null
-    var tokenLocation:String = ""
-    var schema:SchemaType = SchemaType.AuthHeader
+    var tokenLocation:SchemaType? = null
+    var schema:String = ""
 }
 
 enum class SchemaType{

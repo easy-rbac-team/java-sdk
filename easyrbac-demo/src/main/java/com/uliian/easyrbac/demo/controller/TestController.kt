@@ -14,7 +14,7 @@ class TestController {
 
     }
 
-    @Auth(noCheckPermission = false,resourceCode = "test")
+//    @Auth(noCheckPermission = false,resourceCode = "test")
     @GetMapping("/2")
     fun test2(){
 

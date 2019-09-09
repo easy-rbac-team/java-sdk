@@ -1,8 +1,68 @@
 {
   "group": [
     {
-      "name": "easy-rbac",
+      "name": "easyrbac",
       "type": "com.uliian.easyrbac.config.EasyRbacConfig"
+    },
+    {
+      "name": "easyrbac.jwt",
+      "type": "com.uliian.easyrbac.config.JwtConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "easyrbac.app-id",
+      "type": "java.lang.String",
+      "description": "APP ID"
+    },
+    {
+      "name": "easyrbac.app-secret",
+      "type": "java.lang.String",
+      "description": "APP Secret"
+    },
+    {
+      "name": "easyrbac.url",
+      "type": "java.lang.String",
+      "defaultValue": "http://easyrbac.uliian.com",
+      "description": "APP Secret"
+    },
+    {
+      "name": "easyrbac.check-permission",
+      "type": "java.lang.Boolean",
+      "description": "APP Secret"
+    },
+    {
+      "name": "easyrbac.jwt.key",
+      "type": "java.lang.String",
+      "description": "custom jwt key"
+    },{
+      "name": "easyrbac.jwt.token-location",
+      "type": "com.uliian.easyrbac.config.SchemaType",
+      "description": "JWT location in http request"
+    },
+    {
+      "name": "easyrbac.jwt.schema",
+      "type": "schema",
+      "description": "JWT schema"
+    }
+  ],
+  "hints": [
+    {
+      "name": "easyrbac.jwt.token-location",
+      "values": [
+        {
+          "value": "AuthHeader",
+          "description": "In http header : Authorization header"
+        },
+        {
+          "value": "QueryString",
+          "description": "In URL QueryString like : &schema=token"
+        },
+        {
+          "value": "Cookie",
+          "description": "In Http Cookie Schema=Token"
+        }
+      ]
     }
   ]
 }

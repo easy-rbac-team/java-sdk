@@ -1,6 +1,8 @@
 easyrbac:
-  app-id: test
+  app-id: admin
   app-secret: test
   url: http://easyrbac.uliian.com
-  token-config:
-    key: 888888888
+  jwt:
+    key: fdsafdsa
+    schema: DYT
+    token-location: AuthHeader

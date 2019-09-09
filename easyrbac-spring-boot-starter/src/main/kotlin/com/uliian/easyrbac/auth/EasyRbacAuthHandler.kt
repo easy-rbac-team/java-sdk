@@ -3,16 +3,21 @@ package com.uliian.easyrbac.auth
 import com.uliian.easyrbac.config.DefaultInstance
 import com.uliian.easyrbac.config.DefaultSpringConstant
 import com.uliian.easyrbac.config.EasyRbacConfig
+import com.uliian.easyrbac.config.JwtConfig
 import com.uliian.easyrbac.dto.UserInfo
 import com.uliian.easyrbac.exception.EasyRbacException
 import com.uliian.easyrbac.service.IEasyRbacService
+import com.uliian.easyrbac.service.ILocalTokenService
 import com.uliian.easyrbac.utils.getAuthHeader
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig, private val easyRbacService: IEasyRbacService) :
+class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
+                          private val jwtConfig: JwtConfig,
+                          private val easyRbacService: IEasyRbacService,
+                          private val localTokenService: ILocalTokenService) :
         HandlerInterceptor {
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         if (request.method == "OPTIONS") {
@@ -30,7 +35,7 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig, private va
             return true
         }
         try {
-            val userInfo = this.verifyUser(request, authInfo)
+            val userInfo = this.verifyUser(request)
             request.setAttribute(DefaultSpringConstant.USER_INFO_ATTR, userInfo)
             if (easyRbacConfig.checkPermission) {
                 this.checkPermission(userInfo, authInfo)
@@ -52,7 +57,7 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig, private va
     }
 
     private fun match(request: HttpServletRequest, authInfo: Auth?): Boolean {
-        return request.getAuthHeader()?.schema == this.easyRbacConfig.localTokenConfig.schema.toString() || authInfo != null
+        return request.getAuthHeader()?.schema == this.jwtConfig.schema.toString() || authInfo != null
     }
 
     @Throws(EasyRbacException::class)
@@ -66,7 +71,8 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig, private va
     }
 
     @Throws(EasyRbacException::class)
-    private fun verifyUser(request: HttpServletRequest, authInfo: Auth): UserInfo {
-        return this.easyRbacService.getUserInfo(request.getAuthHeader()!!.token)
+    private fun verifyUser(request: HttpServletRequest): UserInfo {
+//        return this.easyRbacService.getUserInfo(request.getAuthHeader()!!.token)
+        return this.localTokenService.getUserInfoByLocalToken(request.getAuthHeader()!!.token)
     }
 }
