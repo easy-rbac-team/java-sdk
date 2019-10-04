@@ -13,6 +13,8 @@ buildscript {
     }
 }
 
+
+
 allprojects {
     group 'com.uliian'
     version '1.0-SNAPSHOT'
@@ -27,4 +29,25 @@ allprojects {
         mavenLocal()
         mavenCentral()
     }
+}
+
+subprojects {
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        classifier 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar) {
+        classifier = "javadoc"
+        from javadoc
+    }
+
+    artifacts {
+        //archives jar
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    apply from:"../upload.gradle"
 }
