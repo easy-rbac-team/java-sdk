@@ -44,6 +44,11 @@
       "name": "easyrbac.jwt.schema",
       "type": "schema",
       "description": "JWT schema"
+    },
+    {
+      "name": "easyrbac.jwt.expireTimeMilliseconds",
+      "type": "java.lang.Integer",
+      "description": "JWT Expire Time (Milliseconds)"
     }
   ],
   "hints": [

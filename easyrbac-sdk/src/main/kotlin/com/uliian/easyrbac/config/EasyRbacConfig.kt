@@ -10,8 +10,9 @@ class EasyRbacConfig {
 
 class JwtConfig {
     var key: String? = null
-    var tokenLocation:SchemaType? = null
+    var tokenLocation:SchemaType = SchemaType.AuthHeader
     var schema:String = ""
+    var expireTimeSeconds:Int = 8*60*60*1000
 }
 
 enum class SchemaType{

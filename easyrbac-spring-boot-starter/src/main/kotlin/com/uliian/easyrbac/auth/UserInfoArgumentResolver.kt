@@ -1,4 +1,4 @@
-package com.ynhdkc.link.config
+package com.uliian.easyrbac.auth
 
 import com.uliian.easyrbac.config.DefaultSpringConstant
 import com.uliian.easyrbac.dto.UserInfo

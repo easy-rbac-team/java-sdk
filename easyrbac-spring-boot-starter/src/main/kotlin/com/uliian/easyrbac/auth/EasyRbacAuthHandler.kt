@@ -4,6 +4,7 @@ import com.uliian.easyrbac.config.DefaultInstance
 import com.uliian.easyrbac.config.DefaultSpringConstant
 import com.uliian.easyrbac.config.EasyRbacConfig
 import com.uliian.easyrbac.config.JwtConfig
+import com.uliian.easyrbac.dto.StandardErrorResult
 import com.uliian.easyrbac.dto.UserInfo
 import com.uliian.easyrbac.exception.EasyRbacException
 import com.uliian.easyrbac.service.IEasyRbacService
@@ -49,7 +50,8 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
             response.setHeader("Access-Control-Max-Age", "3600")
             response.setHeader("Access-Control-Allow-Headers", "content-type, authorization")
             response.contentType = "application/json"
-            val json = DefaultInstance.defaultJackson.writeValueAsString(e)
+
+            val json = DefaultInstance.defaultJackson.writeValueAsString(StandardErrorResult(e.message,e.httpCode))
             response.writer.write(json)
             return false
         }
@@ -72,6 +74,9 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
 
     @Throws(EasyRbacException::class)
     private fun verifyUser(request: HttpServletRequest): UserInfo {
+        if(request.getAuthHeader() == null){
+            throw EasyRbacException("未登录",401)
+        }
 //        return this.easyRbacService.getUserInfo(request.getAuthHeader()!!.token)
         return this.localTokenService.getUserInfoByLocalToken(request.getAuthHeader()!!.token)
     }

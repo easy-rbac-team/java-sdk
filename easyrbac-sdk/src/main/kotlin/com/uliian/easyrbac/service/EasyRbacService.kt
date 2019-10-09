@@ -39,25 +39,25 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
 
     override fun getEasyRbacUserInfo(easyRbacUserToken: String): UserInfo {
         val path = "/app/user/$easyRbacUserToken"
-        val req = Request.Builder().url("${this.easyRbacConfig.url}/$path").build()
-        return this.callApi<UserInfo>(req)
+        val appToken = this.getAppToken()
+        val req = Request.Builder()
+                .url("${this.easyRbacConfig.url}/$path")
+                .header("Authorization","${appToken.schema} ${appToken.token}")
+                .build()
+        val result = this.callApi<UserInfo>(req)
+        result.easyRbacToken = easyRbacUserToken
+        return result
     }
-
-//    override fun generateToken(easyRbacUserToken: String): String {
-//        val userInfo = this.getEasyRbacUserInfo(easyRbacUserToken)
-//        return this.localTokenService.generateLocalToken(userInfo)
-//    }
-
-//    override fun getUserInfo(localToken: String): UserInfo {
-//        return this.localTokenService.getUserInfoByLocalToken(localToken)
-//    }
 
     override fun getUserResource(easyRbacToken: String): List<UserResource> {
         val key = "EasyRbac-Resource:$easyRbacToken"
+        val appToken = this.getAppToken()
         var resource = this.cache.get(key) as UserResourceList?
         if (resource == null || resource.isEmpty()) {
             val path = "app/resource/$easyRbacToken"
-            val req = Request.Builder().url("${this.easyRbacConfig.url}/$path").header("authorization", "token $easyRbacToken").build()
+            val req = Request.Builder()
+                    .url("${this.easyRbacConfig.url}/$path")
+                    .header("Authorization", "${appToken.schema} ${appToken.token}").build()
             resource = this.callApi(req)
             this.cache.set(key, resource!!, 60_1000, TimePolicy.Sliding)
         }

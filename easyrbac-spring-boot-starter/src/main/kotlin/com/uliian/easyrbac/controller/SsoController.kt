@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/sso")
 class SsoController(private val easyRbacService: IEasyRbacService,private val localTokenService: ILocalTokenService) {
-    @GetMapping("local_login")
-    fun getAuthInfo(@RequestParam easyRbacToken: String, request: HttpServletRequest): String {
+    @GetMapping("/local_login")
+    fun getAuthInfo(easyRbacToken: String, request: HttpServletRequest): String {
         println(request.getHeader("Authorization"))
         val userInfo = this.easyRbacService.getEasyRbacUserInfo(easyRbacToken)
         return this.localTokenService.generateLocalToken(userInfo)
     }
 
     @Auth(noCheckPermission = true,resourceCode = "")
-    @GetMapping("user_menu")
+    @GetMapping("/user_menu")
     fun getUserResource(request: HttpServletRequest,userInfo: UserInfo): List<UserResource> {
         val userResource = this.easyRbacService.getUserResource(userInfo.easyRbacToken)
         return userResource

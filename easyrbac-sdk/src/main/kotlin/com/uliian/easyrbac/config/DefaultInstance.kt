@@ -1,5 +1,6 @@
 package com.uliian.easyrbac.config
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
@@ -15,5 +16,8 @@ object DefaultInstance {
 
     val JSON_TYPE: MediaType = MediaType.get("application/json; charset=utf-8");
 
-    val defaultJackson = ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule())
+    val defaultJackson = ObjectMapper()
+            .registerKotlinModule()
+            .registerModule(JavaTimeModule())
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
 }

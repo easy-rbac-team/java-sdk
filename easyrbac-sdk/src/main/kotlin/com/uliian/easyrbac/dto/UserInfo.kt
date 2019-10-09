@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 
 class UserInfo {
     var id: Long = 0
-    var name: String? = null
+    var userName: String? = null
     var realName: String? = null
     var mobilePhone: String? = null
     var isEnable: Boolean = false
