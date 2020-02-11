@@ -1,5 +1,5 @@
 rootProject.name = 'easyrbac'
 
 include(':easyrbac-sdk')
-include 'easyrbac-spring-boot-starter'
+include ':easyrbac-spring-boot-starter'
 include(':easyrbac-demo')

@@ -30,7 +30,7 @@ class SsoAuthConfiguration {
         if (jwtConfig.key == null) {
             throw EasyRbacException("缺少配置项：token-config.key", 500)
         }
-        return JwtTokenService(jwtConfig.key!!,jwtConfig.schema.toString())
+        return JwtTokenService(jwtConfig)
     }
 
     @Bean

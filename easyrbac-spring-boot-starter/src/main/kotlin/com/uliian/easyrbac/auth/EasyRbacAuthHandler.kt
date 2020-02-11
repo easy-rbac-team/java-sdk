@@ -49,7 +49,7 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
             response.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS, DELETE")
             response.setHeader("Access-Control-Max-Age", "3600")
             response.setHeader("Access-Control-Allow-Headers", "content-type, authorization")
-            response.contentType = "application/json"
+            response.contentType = "application/json;charset=utf-8"
 
             val json = DefaultInstance.defaultJackson.writeValueAsString(StandardErrorResult(e.message,e.httpCode))
             response.writer.write(json)
@@ -59,7 +59,7 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
     }
 
     private fun match(request: HttpServletRequest, authInfo: Auth?): Boolean {
-        return request.getAuthHeader()?.schema == this.jwtConfig.schema.toString() || authInfo != null
+        return request.getAuthHeader()?.schema == this.jwtConfig.schema || authInfo != null
     }
 
     @Throws(EasyRbacException::class)
