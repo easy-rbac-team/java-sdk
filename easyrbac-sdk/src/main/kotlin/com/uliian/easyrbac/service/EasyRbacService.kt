@@ -27,7 +27,7 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
             request["password"] = easyRbacConfig.appSecret
             request["appCode"] = easyRbacConfig.appId
             val requestJson = this.objectMapper.writeValueAsString(request)
-            var req = Request.Builder().url("${easyRbacConfig.url}/$path").post(RequestBody.create(DefaultInstance.JSON_TYPE, requestJson)).build()
+            var req = Request.Builder().url("${easyRbacConfig.url}$path").post(RequestBody.create(DefaultInstance.JSON_TYPE, requestJson)).build()
 
             val result = callApi<LoginResult>(req)
             cache.set(key, result, result.expireIn * 1000L)
@@ -41,7 +41,7 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
         val path = "/app/user/$easyRbacUserToken"
         val appToken = this.getAppToken()
         val req = Request.Builder()
-                .url("${this.easyRbacConfig.url}/$path")
+                .url("${this.easyRbacConfig.url}$path")
                 .header("Authorization","${appToken.schema} ${appToken.token}")
                 .build()
         val result = this.callApi<UserInfo>(req)

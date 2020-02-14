@@ -6,6 +6,8 @@ dependencies {
     compile('com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9')
     compile('com.labijie:caching-kotlin:1.0.1')
     compile 'com.auth0:java-jwt:3.8.2'
+
+    testImplementation('junit:junit:4.13')
 }
 
 compileKotlin {
