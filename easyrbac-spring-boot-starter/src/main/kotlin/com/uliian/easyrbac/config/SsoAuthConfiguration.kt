@@ -41,6 +41,7 @@ class SsoAuthConfiguration {
 
     @Bean
     @ConditionalOnBean(JwtConfig::class)
+    @ConditionalOnMissingBean(EasyRbacAuthHandler::class)
     fun easyRbacAuthHandler(easyRbacConfig: EasyRbacConfig, easyRbacService: IEasyRbacService, jwtConfig: JwtConfig,localTokenService: ILocalTokenService): EasyRbacAuthHandler {
         return EasyRbacAuthHandler(easyRbacConfig,jwtConfig,easyRbacService,localTokenService)
     }

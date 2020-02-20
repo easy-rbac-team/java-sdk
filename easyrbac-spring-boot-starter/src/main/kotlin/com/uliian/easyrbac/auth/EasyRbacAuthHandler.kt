@@ -37,7 +37,7 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
         }
         try {
             val userInfo = this.verifyUser(request)
-            request.setAttribute(DefaultSpringConstant.USER_INFO_ATTR, userInfo)
+            setUserInfoToContext(request, userInfo)
             if (easyRbacConfig.checkPermission) {
                 this.checkPermission(userInfo, authInfo)
             }
@@ -58,8 +58,12 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
 
     }
 
+    protected fun setUserInfoToContext(request: HttpServletRequest, userInfo: UserInfo) {
+        request.setAttribute(DefaultSpringConstant.USER_INFO_ATTR, userInfo)
+    }
+
     private fun match(request: HttpServletRequest, authInfo: Auth?): Boolean {
-        return request.getAuthHeader()?.schema == this.jwtConfig.schema || authInfo != null
+        return request.getAuthHeader()?.schema == this.jwtConfig.schema && authInfo != null
     }
 
     @Throws(EasyRbacException::class)
