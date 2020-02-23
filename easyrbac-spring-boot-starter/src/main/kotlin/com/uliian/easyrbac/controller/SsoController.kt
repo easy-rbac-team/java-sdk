@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
 class SsoController(private val easyRbacService: IEasyRbacService,private val localTokenService: ILocalTokenService) {
     @GetMapping("/local_login")
     fun getAuthInfo(easyRbacToken: String, request: HttpServletRequest): String {
-        println(request.getHeader("Authorization"))
+//        println(request.getHeader("Authorization"))
         val userInfo = this.easyRbacService.getEasyRbacUserInfo(easyRbacToken)
         return this.localTokenService.generateLocalToken(userInfo)
     }

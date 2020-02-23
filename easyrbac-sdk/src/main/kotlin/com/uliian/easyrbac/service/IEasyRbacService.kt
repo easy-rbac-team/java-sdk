@@ -1,8 +1,6 @@
 package com.uliian.easyrbac.service
 
-import com.uliian.easyrbac.dto.LoginResult
-import com.uliian.easyrbac.dto.UserInfo
-import com.uliian.easyrbac.dto.UserResource
+import com.uliian.easyrbac.dto.*
 
 interface IEasyRbacService {
      fun getAppToken(): LoginResult
@@ -16,4 +14,10 @@ interface IEasyRbacService {
      fun getUserResource(easyRbacToken: String): List<UserResource>
 
      fun hasPermission(easyRbacToken: String, resourceCode: String): Boolean
+
+     fun createUser(addUserDto: AddUserDto):Long
+
+     fun addUserToOneRole(dto: AddUserOneRoleDto)
+
+     fun removeUserFromOneGroup(dto: RemoveUserFromRole)
 }

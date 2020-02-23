@@ -9,4 +9,5 @@ class UserInfo {
     var mobilePhone: String? = null
     var isEnable: Boolean = false
     var easyRbacToken: String = ""
+    var roles:List<String> = arrayListOf()
 }
