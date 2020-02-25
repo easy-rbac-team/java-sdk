@@ -13,7 +13,6 @@ class EasyRbacServiceTest {
     init {
         val config = EasyRbacConfig()
 
-
         this.easyRbacService = EasyRbacService(config)
     }
 

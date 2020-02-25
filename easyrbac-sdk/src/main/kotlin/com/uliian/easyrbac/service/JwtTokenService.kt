@@ -30,6 +30,7 @@ class JwtTokenService(private val jwtConfig: JwtConfig) : ILocalTokenService {
         result.mobilePhone = tokenInfo.claims.getValue("mobilePhone").asString()
         result.isEnable = tokenInfo.claims.getValue("isEnable").asBoolean()
         result.easyRbacToken = tokenInfo.claims.getValue("easyRbacToken").asString()
+        result.roles = tokenInfo.claims.getValue("roles").asList(String::class.java)
         return result
     }
 
@@ -43,6 +44,7 @@ class JwtTokenService(private val jwtConfig: JwtConfig) : ILocalTokenService {
                 .withClaim("mobilePhone", userInfo.mobilePhone)
                 .withClaim("isEnable", userInfo.isEnable)
                 .withClaim("easyRbacToken", userInfo.easyRbacToken)
+                .withArrayClaim("roles",userInfo.roles.toTypedArray())
                 .withExpiresAt(expireDate)
                 .sign(algorithm)
         return "${this.jwtConfig.schema} $jwt"

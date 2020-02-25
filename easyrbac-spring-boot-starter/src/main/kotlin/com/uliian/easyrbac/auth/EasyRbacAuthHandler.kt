@@ -15,7 +15,7 @@ import org.springframework.web.servlet.HandlerInterceptor
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
+open class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
                           private val jwtConfig: JwtConfig,
                           private val easyRbacService: IEasyRbacService,
                           private val localTokenService: ILocalTokenService) :
@@ -30,11 +30,8 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
         }
 
         val handlerImpl = handler as HandlerMethod?
-        val authInfo = handlerImpl!!.getMethodAnnotation(Auth::class.java)
+        val authInfo = handlerImpl!!.getMethodAnnotation(Auth::class.java) ?: return true
 
-        if (!this.match(request, authInfo)) {
-            return true
-        }
         try {
             val userInfo = this.verifyUser(request)
             setUserInfoToContext(request, userInfo)
@@ -58,7 +55,7 @@ class EasyRbacAuthHandler(private val easyRbacConfig: EasyRbacConfig,
 
     }
 
-    protected fun setUserInfoToContext(request: HttpServletRequest, userInfo: UserInfo) {
+    open protected fun setUserInfoToContext(request: HttpServletRequest, userInfo: UserInfo) {
         request.setAttribute(DefaultSpringConstant.USER_INFO_ATTR, userInfo)
     }
 

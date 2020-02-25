@@ -57,25 +57,26 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
         var resource = this.cache.get(key) as UserResourceList?
         if (resource == null || resource.isEmpty()) {
             val path = "app/resource/$easyRbacToken"
-            val resourceJson = callAuthApi<Any>(path,"GET")
-            val resource = this.objectMapper.readValue<List<UserResource>>(resourceJson!!)
-            this.cache.set(key, resource!!, 60_1000, TimePolicy.Sliding)
+            val resourceJson = callAuthApi(path) {it.get()}
+            resource = this.objectMapper.readValue<UserResourceList>(resourceJson!!)
+            this.cache.set(key, resource, 60_1000, TimePolicy.Sliding)
         }
-        return resource!!
+        return resource
     }
 
-    protected fun <TIn> callAuthApi(path: String,method:String,body: TIn?=null): String? {
+    protected fun callAuthApi(path: String,reqBuild:(Request.Builder)->Request.Builder): String? {
         val appToken = this.getAppToken()
         val req = Request.Builder()
                 .url("${this.easyRbacConfig.url}/$path")
                 .header("Authorization", "${appToken.schema} ${appToken.token}")
-        if(body!=null){
-            val json = this.objectMapper.writeValueAsString(body)
-            val body = RequestBody.create(MediaType.get("application/json; charset=UTF-8"),json)
-            req.method(method,body)
-        }else{
-            req.method(method, RequestBody.create(null,ByteArray(0)))
-        }
+//        if(body!=null){
+//            val json = this.objectMapper.writeValueAsString(body)
+//            val body = RequestBody.create(MediaType.get("application/json; charset=UTF-8"),json)
+//            req.method(method,body)
+//        }else{
+//            req.method(method, RequestBody.create(null, ByteArray(0)))
+//        }
+        reqBuild(req)
         return callApi(req.build())
     }
 
@@ -111,17 +112,28 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
 
     override fun createUser(addUserDto:AddUserDto):Long{
         val path ="user"
-        val userIdStr = callAuthApi(path,"POST", addUserDto)
+        val json = this.objectMapper.writeValueAsString(addUserDto)
+        val userIdStr = this.callAuthApi(path){it.post(RequestBody.create(MediaType.get("application/json; charset=UTF-8"),json))}
         return this.objectMapper.readValue<Long>(userIdStr!!)
     }
 
     override fun addUserToOneRole(dto:AddUserOneRoleDto){
         val path = "Role/${dto.roleId}/user/${dto.userId}"
-        this.callAuthApi<Any>(path,"POST")
+        this.callAuthApi(path){it.post(RequestBody.create(null, ByteArray(0)))}
     }
 
     override fun removeUserFromOneGroup(dto:RemoveUserFromRole){
         val path = "Role/${dto.roleId}/user/${dto.userId}"
-        this.callAuthApi<Any>(path,"DELETE")
+        this.callAuthApi(path){it.delete()}
+    }
+
+    override fun disableUser(userId:Long){
+        val path = "user/${userId}"
+        this.callAuthApi(path) {it.delete()}
+    }
+
+    override fun enableUser(userId:Long){
+        val path = "user/${userId}"
+        this.callAuthApi(path){it.patch(null)}
     }
 }

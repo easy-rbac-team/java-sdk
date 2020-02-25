@@ -1,8 +1,6 @@
 package com.uliian.easyrbac.dto
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-
-class UserInfo {
+open class UserInfo {
     var id: Long = 0
     var userName: String? = null
     var realName: String? = null
