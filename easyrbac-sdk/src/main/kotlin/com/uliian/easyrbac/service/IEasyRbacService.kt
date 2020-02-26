@@ -22,4 +22,5 @@ interface IEasyRbacService {
     fun removeUserFromOneGroup(dto: RemoveUserFromRole)
     fun disableUser(userId: Long)
     fun enableUser(userId: Long)
+    fun getEasyRbacUserInfo(userId: Long): UserInfo
 }

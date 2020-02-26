@@ -52,6 +52,12 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
         return result
     }
 
+    override fun getEasyRbacUserInfo(userId: Long):UserInfo{
+        val path = "user/${userId}"
+        val json = this.callAuthApi(path){req->req.get()}
+        return objectMapper.readValue(json,UserInfo::class.java)
+    }
+
     override fun getUserResource(easyRbacToken: String): List<UserResource> {
         val key = "EasyRbac-Resource:$easyRbacToken"
         var resource = this.cache.get(key) as UserResourceList?
