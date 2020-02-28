@@ -140,6 +140,6 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
 
     override fun enableUser(userId:Long){
         val path = "user/${userId}"
-        this.callAuthApi(path){it.patch(null)}
+        this.callAuthApi(path){it.patch(RequestBody.create(null, ByteArray(0)))}
     }
 }
