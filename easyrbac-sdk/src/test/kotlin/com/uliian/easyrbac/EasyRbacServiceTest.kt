@@ -13,7 +13,7 @@ class EasyRbacServiceTest {
     val easyRbacService:EasyRbacService
     init {
         val config = EasyRbacConfig()
-        config.url = "https://easyrbac.api.dian1tong.com/"
+
 
         this.easyRbacService = EasyRbacService(config)
     }
@@ -27,7 +27,7 @@ class EasyRbacServiceTest {
 
     @Test
     fun loginTest(){
-        val result = this.easyRbacService.directLogin(LoginRequest("admin","888888aa","hos-schedule"))
+        val result = this.easyRbacService.directLogin(LoginRequest("admin","aaa","hos-test"))
         println(result)
     }
 
