@@ -1,6 +1,7 @@
 package com.uliian.easyrbac.controller
 
 import com.uliian.easyrbac.auth.Auth
+import com.uliian.easyrbac.dto.LoginRequest
 import com.uliian.easyrbac.dto.UserInfo
 import com.uliian.easyrbac.dto.UserResource
 import com.uliian.easyrbac.service.IEasyRbacService
@@ -27,7 +28,9 @@ class SsoController(private val easyRbacService: IEasyRbacService,private val lo
     }
 
     @PostMapping("/user_lign")
-    fun loginDirect():String{
-
+    fun loginDirect(req:LoginRequest):String{
+        val loginResult = this.easyRbacService.directLogin(req)
+        val userInfo = this.easyRbacService.getEasyRbacUserInfo(loginResult.token)
+        return this.localTokenService.generateLocalToken(userInfo)
     }
 }
