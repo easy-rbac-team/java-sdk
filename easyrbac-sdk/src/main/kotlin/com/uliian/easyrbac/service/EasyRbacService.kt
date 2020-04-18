@@ -70,6 +70,14 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
         return resource
     }
 
+    override fun directLogin(login:LoginRequest):LoginResult{
+        val path = "sso/UserLogin"
+        val reqJson = this.objectMapper.writeValueAsString(login)
+        val request = Request.Builder().url("${easyRbacConfig.url}$path").post(RequestBody.create(DefaultInstance.JSON_TYPE, reqJson)).build()
+        val rsp = this.callApi(request)
+        return this.objectMapper.readValue<LoginResult>(rsp,LoginResult::class.java)
+    }
+
     protected fun callAuthApi(path: String,reqBuild:(Request.Builder)->Request.Builder): String? {
         val appToken = this.getAppToken()
         val req = Request.Builder()
@@ -96,7 +104,7 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
             if (item.resourceCode != null && condition.invoke(item)) {
                 return true
             }
-            if (item.children!!.isNotEmpty()) {
+            if (item.children?.isNotEmpty() == true) {
                 if (hasItem(item.children!!, condition)) {
                     return true
                 }

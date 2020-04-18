@@ -25,4 +25,9 @@ class SsoController(private val easyRbacService: IEasyRbacService,private val lo
         val userResource = this.easyRbacService.getUserResource(userInfo.easyRbacToken)
         return userResource
     }
+
+    @PostMapping("/user_lign")
+    fun loginDirect():String{
+
+    }
 }

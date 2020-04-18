@@ -23,4 +23,6 @@ interface IEasyRbacService {
     fun disableUser(userId: Long)
     fun enableUser(userId: Long)
     fun getEasyRbacUserInfo(userId: Long): UserInfo
+
+    fun directLogin(login:LoginRequest):LoginResult
 }
