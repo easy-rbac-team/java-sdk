@@ -27,7 +27,7 @@ class SsoController(private val easyRbacService: IEasyRbacService,private val lo
         return userResource
     }
 
-    @PostMapping("/user_lign")
+    @PostMapping("/user_login")
     fun loginDirect(req:LoginRequest):String{
         val loginResult = this.easyRbacService.directLogin(req)
         val userInfo = this.easyRbacService.getEasyRbacUserInfo(loginResult.token)
