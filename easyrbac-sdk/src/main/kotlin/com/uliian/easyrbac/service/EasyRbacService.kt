@@ -73,7 +73,7 @@ class EasyRbacService(private val easyRbacConfig: EasyRbacConfig,
     override fun directLogin(login:LoginRequest):LoginResult{
         val path = "sso/UserLogin"
         val reqJson = this.objectMapper.writeValueAsString(login)
-        val request = Request.Builder().url("${easyRbacConfig.url}$path").post(RequestBody.create(DefaultInstance.JSON_TYPE, reqJson)).build()
+        val request = Request.Builder().url("${easyRbacConfig.url}/$path").post(RequestBody.create(DefaultInstance.JSON_TYPE, reqJson)).build()
         val rsp = this.callApi(request)
         return this.objectMapper.readValue<LoginResult>(rsp,LoginResult::class.java)
     }
